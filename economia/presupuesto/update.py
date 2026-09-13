@@ -83,7 +83,9 @@ def update() -> None:
             .sort_values(ORDER)
             .rename(columns={"hijo": values["hijo"], "padre": values["padre"]})
         )
-        output.to_csv(OUTPUT_DIR / f"{values['filename']}.csv", index=False)
+        output.to_csv(
+            OUTPUT_DIR / f"{values['filename']}.csv", index=False, float_format="%.2f"
+        )
 
 
 if __name__ == "__main__":
