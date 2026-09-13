@@ -67,6 +67,19 @@ def get_data(session: requests.Session) -> pd.DataFrame:
     return pd.DataFrame(raw)
 
 
+def save_classifier(
+    output: pd.DataFrame, filename: str, sort_columns: list[str]
+) -> None:
+    """Append a classifier snapshot to disk and remove exact duplicate rows."""
+    output_file = OUTPUT_DIR / f"{filename}.csv"
+    if output_file.exists():
+        previous = pd.read_csv(output_file, parse_dates=["fecha"])
+        output = pd.concat([previous, output], ignore_index=True)
+
+    output = output.drop_duplicates().sort_values(sort_columns)
+    output.to_csv(output_file, index=False, float_format="%.2f")
+
+
 def update() -> None:
     session = create_session()
     last_update = get_last_update(session)
@@ -80,11 +93,12 @@ def update() -> None:
         print(classifier)
         output = (
             df[df["clasificador"] == classifier][ORDER]
-            .sort_values(ORDER)
             .rename(columns={"hijo": values["hijo"], "padre": values["padre"]})
         )
-        output.to_csv(
-            OUTPUT_DIR / f"{values['filename']}.csv", index=False, float_format="%.2f"
+        save_classifier(
+            output,
+            values["filename"],
+            ["fecha", values["padre"], values["hijo"], "devengado"],
         )
 
 
