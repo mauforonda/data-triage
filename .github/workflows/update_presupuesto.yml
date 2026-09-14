@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: data/fuentes/extra/economia
+        working-directory: economia
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: "3.x"
           cache: pip
-          cache-dependency-path: data/fuentes/extra/requirements.txt
+          cache-dependency-path: requirements.txt
 
       - name: Install dependencies
         run: python -m pip install -r ../requirements.txt
@@ -33,12 +33,12 @@ jobs:
 
       - name: Commit changes
         run: |
-          if git diff --quiet -- data/fuentes/extra/economia/presupuesto/data; then
+          if git diff --quiet -- presupuesto/data; then
             echo "No changes to commit"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/fuentes/extra/economia/presupuesto/data
+          git add presupuesto/data
           git commit -m "Update presupuesto data"
           git push
