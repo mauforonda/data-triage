@@ -1,0 +1,5 @@
+fecha_despacho_efectivo,fecha_despacho_programado,despacho_confirmado,fecha_despacho_difiere_de_programado,distrito_nombre,producto_despachado,cantidad_despachada,unidad,cliente,placa_despacho,familia,familia_codigo,ambito
+2026-09-14,2026-09-14,True,False,Planta Engarrafadora Camargo,GLP DISTRIB. 10 KILOS NAL,6000.0,L,ESTACION DE SERVICIO DE COMBUSTIBLES LIQUIDOS IMPA,1761-RNT,GLP,GLP,
+2026-09-14,2026-09-14,True,False,Planta Engarrafadora Camargo,GLP DISTRIB. 10 KILOS NAL,1000.0,L,ESTACION DE SERVICIO DE COMBUSTIBLES LIQUIDOS IMPA,2698-LTD,GLP,GLP,
+2026-09-11,2026-09-11,True,False,Planta Engarrafadora Camargo,GLP DISTRIB. 10 KILOS NAL,1000.0,L,IVER RODRIGUEZ CORREA,2681-PUH,GLP,GLP,
+2026-09-11,2026-09-11,True,False,Planta Engarrafadora Camargo,GLP DISTRIB. 10 KILOS NAL,1000.0,L,ESTACION DE SERVICIO DE COMBUSTIBLES LIQUIDOS IMPA,2698-LTD,GLP,GLP,
