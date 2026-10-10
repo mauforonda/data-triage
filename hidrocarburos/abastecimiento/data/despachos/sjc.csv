@@ -329,3 +329,5 @@ fecha_despacho_efectivo,fecha_despacho_programado,despacho_confirmado,fecha_desp
 2026-10-08,,True,False,Zona Comercial San Jose de Chiquitos,DIESEL OIL,20000.0,L,YPFB,461-TYK,Diesel Oil Nacional,DIESEL_NACIONAL,Provincia,2026-10-08T21:54:38.560000+00:00,ESTACION DE SERVICIO CASIRIGEOPETROL S.R.L.
 2026-10-08,,True,False,Zona Comercial San Jose de Chiquitos,DIESEL OIL,10000.0,L,YPFB,792-LLE,Diesel Oil Nacional,DIESEL_NACIONAL,Provincia,2026-10-08T21:24:30.090000+00:00,EESS GEOPETROL
 2026-10-08,,True,False,Zona Comercial San Jose de Chiquitos,DIESEL OIL,30000.0,L,YPFB,5178-DGT,Diesel Oil Nacional,DIESEL_NACIONAL,Provincia,2026-10-08T20:23:25.927000+00:00,GASOBOL
+2026-10-10,,True,False,Zona Comercial San Jose de Chiquitos,DIESEL OIL,20000.0,L,YPFB,5178-DGT,Diesel Oil Nacional,DIESEL_NACIONAL,Provincia,2026-10-10T14:42:50.770000+00:00,GASOBOL
+2026-10-10,,True,False,Zona Comercial San Jose de Chiquitos,GASOLINA ESPECIAL,10000.0,L,YPFB,5178-DGT,Gasolina Especial,GASOLINA_ESPECIAL,Provincia,2026-10-10T14:42:50.770000+00:00,GASOBOL
