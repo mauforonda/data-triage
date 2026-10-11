@@ -70,14 +70,17 @@ def get_data(session: requests.Session) -> pd.DataFrame:
 def save_classifier(
     output: pd.DataFrame, filename: str, sort_columns: list[str]
 ) -> None:
-    """Append a classifier snapshot to disk and remove exact duplicate rows."""
-    output_file = OUTPUT_DIR / f"{filename}.csv"
-    if output_file.exists():
-        previous = pd.read_csv(output_file, parse_dates=["fecha"])
-        output = pd.concat([previous, output], ignore_index=True)
+    """Append classifier snapshots to monthly files and remove duplicates."""
+    for month, monthly_output in output.groupby(output["fecha"].dt.strftime("%Y_%m")):
+        month_dir = OUTPUT_DIR / month
+        month_dir.mkdir(parents=True, exist_ok=True)
+        output_file = month_dir / f"{filename}.csv"
+        if output_file.exists():
+            previous = pd.read_csv(output_file, parse_dates=["fecha"])
+            monthly_output = pd.concat([previous, monthly_output], ignore_index=True)
 
-    output = output.drop_duplicates().sort_values(sort_columns)
-    output.to_csv(output_file, index=False, float_format="%.2f")
+        monthly_output = monthly_output.drop_duplicates().sort_values(sort_columns)
+        monthly_output.to_csv(output_file, index=False, float_format="%.2f")
 
 
 def update() -> None:
