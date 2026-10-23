@@ -830,3 +830,5 @@ fecha_despacho_efectivo,fecha_despacho_programado,despacho_confirmado,fecha_desp
 2026-10-20,,True,False,Zona Comercial San Jose de Chiquitos,GASOLINA ESPECIAL,15000.0,L,YPFB,1166-SFT,Gasolina Especial,GASOLINA_ESPECIAL,,2026-10-20T18:03:33.493000-04:00,° E °S BELLA VISTA,VENTA,Transferencia YPFB
 2026-10-19,,True,False,Zona Comercial San Jose de Chiquitos,DIESEL OIL,15000.0,L,YPFB,1095-DYD,Diesel Oil Nacional,DIESEL_NACIONAL,,2026-10-19T19:47:08.077000-04:00,PUERTO QUIJARRO,VENTA,Transferencia YPFB
 2026-10-19,,True,False,Zona Comercial San Jose de Chiquitos,GASOLINA ESPECIAL,35000.0,L,YPFB,996-AYS,Gasolina Especial,GASOLINA_ESPECIAL,,2026-10-19T19:44:10.203000-04:00,°E °S Angel Sandoval,VENTA,Transferencia YPFB
+2026-10-22,,True,False,Zona Comercial San Jose de Chiquitos,DIESEL OIL,20000.0,L,YPFB,461-TYK,Diesel Oil Nacional,DIESEL_NACIONAL,Provincia,2026-10-22T20:13:26.373000-04:00,ESTACION DE SERVICIO CASIRIGEOPETROL S.R.L.,VENTA,Transferencia YPFB
+2026-10-22,,True,False,Zona Comercial San Jose de Chiquitos,DIESEL OIL,16000.0,L,YPFB,298-EPP,Diesel Oil Nacional,DIESEL_NACIONAL,Provincia,2026-10-22T20:12:56.733000-04:00,EESS GEOPETROL,VENTA,Transferencia YPFB
