@@ -1029,3 +1029,5 @@ fecha_despacho_efectivo,fecha_despacho_programado,despacho_confirmado,fecha_desp
 2026-10-31,,True,False,Zona Comercial San Jose de Chiquitos,GASOLINA ESPECIAL,10000.0,L,YPFB,3452-SKB,Gasolina Especial,GASOLINA_ESPECIAL,Provincia,2026-10-31T11:07:29.687000-04:00,EL MANA S.R.L,VENTA,Transferencia YPFB
 2026-10-30,,True,False,Zona Comercial San Jose de Chiquitos,DIESEL OIL,15000.0,L,YPFB,5322-LXP,Diesel Oil Nacional,DIESEL_NACIONAL,Provincia,2026-10-30T23:10:17.167000-04:00,GASOBOL,VENTA,Transferencia YPFB
 2026-10-30,,True,False,Zona Comercial San Jose de Chiquitos,GASOLINA ESPECIAL,10000.0,L,YPFB,5322-LXP,Gasolina Especial,GASOLINA_ESPECIAL,Provincia,2026-10-30T23:10:17.167000-04:00,GASOBOL,VENTA,Transferencia YPFB
+2026-11-03,,True,False,Zona Comercial San Jose de Chiquitos,DIESEL OIL,20000.0,L,YPFB,376-ZEP,Diesel Oil Nacional,DIESEL_NACIONAL,Provincia,2026-11-03T20:03:28.153000-04:00,EESS GEOPETROL,VENTA,Transferencia YPFB
+2026-11-03,,True,False,Zona Comercial San Jose de Chiquitos,GASOLINA ESPECIAL,10000.0,L,YPFB,376-ZEP,Gasolina Especial,GASOLINA_ESPECIAL,Provincia,2026-11-03T20:03:28.153000-04:00,EESS GEOPETROL,VENTA,Transferencia YPFB
