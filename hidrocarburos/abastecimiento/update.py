@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import json
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -8,27 +10,18 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
 
-BASE_URL = "https://nominac.kyros-tech.com/api"
+URL = "https://consulta.ypfb.gob.bo/"
 OUTPUT_DIR = Path(__file__).parent / "data"
 REQUEST_TIMEOUT = (10, 60)
 MAX_RETRIES = 4
-PAGE_SIZE = 100
 TIPOS = ("programacion", "despachos")
-IDENTITY_FIELDS = {
-    "programacion": (
-        "fecha_programacion",
-        "volumen_programado",
-        "producto",
-        "cliente",
-    ),
-    "despachos": (
-        "fecha_despacho_efectivo",
-        "fecha_despacho_programado",
-        "cantidad_despachada",
-        "producto_despachado",
-        "cliente",
-    ),
+DATE_FIELD = {
+    "programacion": "fecha_programacion",
+    "despachos": "fecha_despacho_efectivo",
 }
+DATA_PATTERN = re.compile(
+    r'<script[^>]*id="datos-publicos"[^>]*>(.*?)</script>', re.DOTALL
+)
 
 
 def create_session() -> requests.Session:
@@ -50,114 +43,56 @@ def create_session() -> requests.Session:
     return session
 
 
-def get_json(session: requests.Session, url: str, params: dict | None = None) -> dict:
-    response = session.get(url, params=params, timeout=REQUEST_TIMEOUT)
+def get_datos(session: requests.Session) -> dict:
+    """Read the JSON embedded in the query page."""
+    response = session.get(URL, timeout=REQUEST_TIMEOUT)
     response.raise_for_status()
-    return response.json()
+    match = DATA_PATTERN.search(response.text)
+    if match is None:
+        raise RuntimeError("No se encontró el JSON 'datos-publicos' en la página")
+    return json.loads(match.group(1))
 
 
-def get_distritos(session: requests.Session) -> list[dict]:
-    raw = get_json(session, f"{BASE_URL}/catalogos/distritos/publico")
-    return raw
+def extract_records(datos: dict, tipo: str) -> dict[str, list[dict]]:
+    """Return the records of one type, grouped by district code."""
+    distritos = {str(d["id"]): d for d in datos["distritos"]}
+    records: dict[str, list[dict]] = {}
+    for distrito_id, productos in datos["datos"].items():
+        distrito = distritos[distrito_id]
+        for bloque in productos.values():
+            for item in bloque[tipo]:
+                item = {**item, "distrito_nombre": distrito["nombre"]}
+                records.setdefault(distrito["codigo"].lower(), []).append(item)
+    return records
 
 
-def identity(item: dict, tipo: str) -> tuple:
-    """Return the fields that identify one record within a district/type file."""
-    return tuple(
-        None if pd.isna(item.get(field)) else item.get(field)
-        for field in IDENTITY_FIELDS[tipo]
-    )
+def save_data(output_file: Path, tipo: str, new_data: list[dict]) -> None:
+    """Merge a snapshot into the history.
 
-
-def load_existing(output_file: Path, tipo: str) -> tuple[pd.DataFrame, set[tuple]]:
-    if not output_file.exists() or output_file.stat().st_size == 0:
-        return pd.DataFrame(), set()
-
-    previous = pd.read_csv(output_file)
-    known = {identity(row, tipo) for row in previous.to_dict(orient="records")}
-    return previous, known
-
-
-def get_abastecimiento(
-    session: requests.Session,
-    distrito: dict,
-    tipo: str,
-    known: set[tuple],
-) -> list[dict]:
-    """Fetch unseen records, stopping once a full page is already known.
-
-    The reports are ordered from newest to oldest. Therefore, once a page
-    contains no unseen records, later pages cannot contain new history.
+    The page only shows the current day and its records can change during
+    the day (e.g. confirmations). Therefore, the snapshot replaces any
+    stored record of the same dates.
     """
-    page = 1
-    fetched = 0
-    new_data = []
-    url = f"{BASE_URL}/reportes/{tipo}/publico"
-
-    while True:
-        print(f"{distrito['nombre']} / {tipo} / página {page}")
-        raw = get_json(
-            session,
-            url,
-            params={
-                "distrito_id": distrito["id"],
-                "page": page,
-                "page_size": PAGE_SIZE,
-            },
-        )
-        items = raw.get("items", [])
-        if not items:
-            break
-
-        unseen = []
-        for item in items:
-            item = {**item, "distrito_nombre": distrito["nombre"]}
-            item_identity = identity(item, tipo)
-            if item_identity not in known:
-                known.add(item_identity)
-                unseen.append(item)
-        new_data.extend(unseen)
-
-        fetched += len(items)
-        if fetched >= raw.get("total", fetched) or (known and not unseen):
-            break
-        page += 1
-
-    return new_data
-
-
-def save_data(
-    output_file: Path,
-    tipo: str,
-    previous: pd.DataFrame,
-    new_data: list[dict],
-) -> None:
     current = pd.DataFrame(new_data)
-    if previous.empty:
-        combined = current
-    elif current.empty:
-        combined = previous
-    else:
+    field = DATE_FIELD[tipo]
+    if output_file.exists() and output_file.stat().st_size > 0:
+        previous = pd.read_csv(output_file)
+        previous = previous[~previous[field].isin(current[field].unique())]
         combined = pd.concat([previous, current], ignore_index=True)
+    else:
+        combined = current
 
-    if combined.empty:
-        return
-
-    combined = combined.drop_duplicates(subset=IDENTITY_FIELDS[tipo], keep="first")
     output_file.parent.mkdir(parents=True, exist_ok=True)
     combined.to_csv(output_file, index=False)
 
 
 def main() -> None:
-    session = create_session()
-    distritos = get_distritos(session)
+    datos = get_datos(create_session())
+    print(f"Datos al {datos['fecha_datos']} (generado {datos['generado_en']})")
     for tipo in TIPOS:
-        print(f"Reporte de {tipo}")
-        for distrito in distritos:
-            output_file = OUTPUT_DIR / tipo / f"{distrito['codigo'].lower()}.csv"
-            previous, known = load_existing(output_file, tipo)
-            new_data = get_abastecimiento(session, distrito, tipo, known)
-            save_data(output_file, tipo, previous, new_data)
+        for codigo, new_data in extract_records(datos, tipo).items():
+            print(f"{tipo} / {codigo}: {len(new_data)}")
+            save_data(OUTPUT_DIR / tipo / f"{codigo}.csv", tipo, new_data)
 
 
 if __name__ == "__main__":
