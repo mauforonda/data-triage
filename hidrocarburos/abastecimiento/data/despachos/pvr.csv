@@ -1479,3 +1479,5 @@ fecha_despacho_efectivo,fecha_despacho_programado,despacho_confirmado,fecha_desp
 2026-11-12,,True,False,Puerto Villarroel,GASOLINA ESPECIAL +,14000.0,L,YPFB,6405-GCI,Gasolina Especial +,GASOLINA_ESPECIAL_MAS,,2026-11-12T14:30:40.620000-04:00,EESS TRANS NACIONAL ETERAZAMA,VENTA,Transferencia YPFB,,False
 2026-11-12,,True,False,Puerto Villarroel,GASOLINA ESPECIAL +,14000.0,L,YPFB,6355-EGD,Gasolina Especial +,GASOLINA_ESPECIAL_MAS,Provincia,2026-11-12T14:29:09.547000-04:00,EESS FOX J.G.J.,VENTA,Transferencia YPFB,,False
 2026-11-12,,True,False,Puerto Villarroel,GASOLINA ESPECIAL +,14000.0,L,YPFB,5015-ZCX,Gasolina Especial +,GASOLINA_ESPECIAL_MAS,Provincia,2026-11-12T09:13:09.243000-04:00,EESS ALEX SUCURSAL CBBA,VENTA,Transferencia YPFB,,False
+2026-11-13,,True,False,Puerto Villarroel,DIESEL OIL,10000.0,L,YPFB,6355-EGD,Diesel Oil Nacional,DIESEL_NACIONAL,Provincia,2026-11-13T15:22:58.050000-04:00,EESS FOX J.G.J.,VENTA,Transferencia YPFB,,False
+2026-11-13,,True,False,Puerto Villarroel,GASOLINA ESPECIAL +,18000.0,L,YPFB,6355-EGD,Gasolina Especial +,GASOLINA_ESPECIAL_MAS,Provincia,2026-11-13T15:22:58.050000-04:00,EESS FOX J.G.J.,VENTA,Transferencia YPFB,,False
